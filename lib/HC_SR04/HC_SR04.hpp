@@ -3,12 +3,12 @@
 
 class HC_SR04 {
   public:
-    HC_SR04(int triggerPin, int echoPin); // Constructor to initialize the pins
-    double getDistance(); // Method to get the distance in cm
-    double getRawDistance();
+    HC_SR04(int iTriggerPin, int iEchoPin); // Constructor to initialize the pins
+    double getDistance() const; // Method to get the distance in cm
+    double getRawDistance() const;
   private:
-    int _triggerPin;  // Trigger pin
-    int _echoPin;     // Echo pin
+    int _iTriggerPin;  // Trigger pin
+    int _iEchoPin;     // Echo pin
 };
 
 #endif

@@ -17,17 +17,18 @@ double findMedian(double arr[], int n) {
 
 
 
-HC_SR04::HC_SR04(int triggerPin, int echoPin) {
-  _triggerPin = triggerPin;
-  _echoPin = echoPin;
+HC_SR04::HC_SR04(int iTriggerPin, int iEchoPin) {
+  _iTriggerPin = iTriggerPin;
+  _iEchoPin = iEchoPin;
 
-  pinMode(_triggerPin, OUTPUT);
-  pinMode(_echoPin, INPUT);
+  pinMode(_iTriggerPin, OUTPUT);
+  pinMode(_iEchoPin, INPUT);
 }
 
 
 
-double HC_SR04::getDistance() {
+double HC_SR04::getDistance() const
+{
   const int NUM_READINGS = 10;
   double readings[NUM_READINGS];
 
@@ -43,14 +44,15 @@ double HC_SR04::getDistance() {
 
 
 
-double HC_SR04::getRawDistance() {
-  digitalWrite(_triggerPin, LOW);
+double HC_SR04::getRawDistance() const
+{
+  digitalWrite(_iTriggerPin, LOW);
   delayMicroseconds(2);
-  digitalWrite(_triggerPin, HIGH);
+  digitalWrite(_iTriggerPin, HIGH);
   delayMicroseconds(10);
-  digitalWrite(_triggerPin, LOW);
+  digitalWrite(_iTriggerPin, LOW);
 
-  double duration = pulseIn(_echoPin, HIGH);
+  double duration = pulseIn(_iEchoPin, HIGH);
 
   double distance = duration / 58;  // Convert the pulse duration to distance (in cm)
 

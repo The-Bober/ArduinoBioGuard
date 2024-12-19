@@ -21,12 +21,11 @@ HC_SR04 sensor(TRIG_PIN, ECHO_PIN); // Ultrasonic sensor object
 
 File file; // File object for SD card
 
-char nume_fisier[] = "data.csv";
+char szFileName[] = "data.csv";
 
 void setup()
 {
   Serial.begin(9600);
-
   // Initialize SD card
   if (!SD.begin(PIN_CS))
   {
@@ -46,46 +45,45 @@ void setup()
     errorHandler("RTC NOT INITIALISED");
   }
   if (rtc.lostPower())
-    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__))); // Set the RTC to the date & time this sketch was compiled
   // Write headers to the file if it's empty
   if (file.size() == 0)
   {
-    file.println("Data,Ora,Nivelul Apei, Nivel PH");
+    file.println("Data,Ora,Nivelul Apei, Nivel PH"); //date,hour, water level, ph level
     file.flush();
   }
   delay(200);
 }
-
 void loop()
 {
-  // Get current date and time
-  DateTime now = rtc.now();
-  // Format date and time
-  char dateBuffer[11]; // Format: YYYY-MM-DD
-  char timeBuffer[9];  // Format: HH:MM:SS
-  sprintf(dateBuffer, "%04d-%02d-%02d", now.year(), now.month(), now.day());
-  sprintf(timeBuffer, "%02d:%02d:%02d", now.hour(), now.minute(), now.second());
+    // Get current date and time
+    DateTime now = rtc.now();
+    // Format date and time
+    char dateBuffer[11]; // Format: YYYY-MM-DD
+    char timeBuffer[9];  // Format: HH:MM:SS
+    sprintf(dateBuffer, "%04d-%02d-%02d", now.year(), now.month(), now.day());
+    sprintf(timeBuffer, "%02d:%02d:%02d", now.hour(), now.minute(), now.second());
 
-  float distance = sensor.getDistance();
-  int phValue = analogRead(PH_INPUT_PIN); // Raw pH sensor data
+    float distance = sensor.getDistance();
+    int phValue = analogRead(PH_INPUT_PIN); // Raw pH sensor data
 
-  // Write data to the file
-  if (file)
-  {
-    file.print(dateBuffer);
-    file.print(",");
-    file.print(timeBuffer);
-    file.print(",");
-    file.print(distance, 2); // Ultrasonic data with 2 decimal points
-    file.print(",");
-    file.println(phValue); // pH sensor data
-    file.flush();          // Ensure data is written to SD card
-  }
-  else
-  {
-    Serial.println("Failed to write to file!");
-  }
+    // Write data to the file
+    if (file)
+    {
+      file.print(dateBuffer);
+      file.print(",");
+      file.print(timeBuffer);
+      file.print(",");
+      file.print(distance, 2); // Ultrasonic data with 2 decimal points
+      file.print(",");
+      file.println(phValue); // pH sensor data
+      file.flush();          // Ensure data is written to SD card
+    }
+    else
+    {
+      Serial.println("Failed to write to file!");
+    }
 
-  // Add a delay to control logging frequency
-  delay(500); // Adjust delay as needed
+    // Add a delay to control logging frequency
+    delay(500); // Adjust delay as needed
 }
