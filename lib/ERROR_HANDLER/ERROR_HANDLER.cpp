@@ -3,6 +3,6 @@
 void errorHandler(char* cErr)
 {
   Serial.println(cErr);
-  for(;;)
-  {}  
+    while (1)
+    {}
 }

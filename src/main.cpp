@@ -21,7 +21,7 @@ HC_SR04 sensor(TRIG_PIN, ECHO_PIN); // Ultrasonic sensor object
 
 File file; // File object for SD card
 
-char szFileName[] = "data.csv";
+char szNumeFisier[] = "data.csv";
 
 void setup()
 {
@@ -33,7 +33,7 @@ void setup()
   }
 
   // Open file for appending data
-  file = SD.open(nume_fisier, FILE_WRITE);
+  file = SD.open(szNumeFisier, FILE_WRITE);
   if (!file)
   {
     errorHandler("FAILED TO OPEN FILE");

@@ -1,7 +1,6 @@
 #include <HC_SR04.hpp>
 #include <Arduino.h>
 
-
 double findMedian(double arr[], int n) {
   for (int i = 1; i < n; i++) {
     double key = arr[i];
@@ -15,20 +14,13 @@ double findMedian(double arr[], int n) {
   return arr[n / 2];
 }
 
-
-
-HC_SR04::HC_SR04(int iTriggerPin, int iEchoPin) {
-  _iTriggerPin = iTriggerPin;
-  _iEchoPin = iEchoPin;
-
+HC_SR04::HC_SR04(int iTriggerPin, int iEchoPin, Unit unit)
+  : _iTriggerPin(iTriggerPin), _iEchoPin(iEchoPin), _unit(unit) {
   pinMode(_iTriggerPin, OUTPUT);
   pinMode(_iEchoPin, INPUT);
 }
 
-
-
-double HC_SR04::getDistance() const
-{
+double HC_SR04::getDistance() const {
   const int NUM_READINGS = 10;
   double readings[NUM_READINGS];
 
@@ -39,13 +31,14 @@ double HC_SR04::getDistance() const
 
   double medianDistance = findMedian(readings, NUM_READINGS);
 
+  if (_unit == INCH) {
+    medianDistance *= 0.393701; // Convert cm to inches
+  }
+
   return medianDistance;
 }
 
-
-
-double HC_SR04::getRawDistance() const
-{
+double HC_SR04::getRawDistance() const {
   digitalWrite(_iTriggerPin, LOW);
   delayMicroseconds(2);
   digitalWrite(_iTriggerPin, HIGH);
