@@ -1,9 +1,5 @@
 #include <Adafruit_BusIO_Register.h>
-#include <Adafruit_I2CDevice.h>
-#include <Adafruit_I2CRegister.h>
-#include <Adafruit_SPIDevice.h>
 #include <RTClib.h>
-#include <DateTimeFunctions.h>
 #include <Wire.h>
 #include <SD.h>
 #include <Arduino.h>
@@ -25,7 +21,10 @@ char szNumeFisier[] = "data.csv";
 
 void setup()
 {
+  Wire.begin();
   Serial.begin(9600);
+  while (!Serial)
+    ;
   // Initialize SD card
   if (!SD.begin(PIN_CS))
   {
@@ -44,6 +43,7 @@ void setup()
   {
     errorHandler("RTC NOT INITIALISED");
   }
+
   if (rtc.lostPower())
     rtc.adjust(DateTime(F(__DATE__), F(__TIME__))); // Set the RTC to the date & time this sketch was compiled
   // Write headers to the file if it's empty

@@ -1,8 +1,8 @@
 #include "ERROR_HANDLER.hpp"
 #include <Arduino.h>
-void errorHandler(char* cErr)
+void errorHandler(const char* cErr)
 {
   Serial.println(cErr);
-    while (1)
+    while (true)
     {}
 }
